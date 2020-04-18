@@ -1,9 +1,9 @@
 extends KinematicBody2D
 
 
-export var speed = 75
-export var acceleration = 50
-export var friction = 95
+export var speed = 500
+export var acceleration = 2500
+export var friction = 5000
 
 var velocity: Vector2
 
@@ -12,7 +12,8 @@ func _physics_process(delta):
 	direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	if direction != Vector2.ZERO:
-		direction = direction.normalized()	
+		if abs(direction.x) == 1 and abs(direction.y) == 1:	
+			direction = direction.normalized()	
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
