@@ -19,5 +19,5 @@ func _on_Timer_timeout():
 	
 	food.position.x = x
 	food.position.y = y
-	get_parent().add_child(food)
+	get_parent().get_node("YSort").add_child(food)
 	food.add_to_group("food")
