@@ -60,3 +60,8 @@ func get_animation_direction(direction: Vector2):
 		animations.flip_h = true
 	return animation
 	
+
+
+func _on_Food_area_entered(area):
+	print("I ate food")
+	
