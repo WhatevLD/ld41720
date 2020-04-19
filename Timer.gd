@@ -11,7 +11,7 @@ func _on_Timer_timeout():
 	var screen_size = get_viewport().get_visible_rect().size
 	var food = Food.instance()
 	
-	food.calories = rand.randi_range(0, 1000)
+	food.calories = rand.randi_range(1000, 10000)
 	food.tileId = rand.randi_range(0, 63)
 
 	var x = rand.randf_range(0,screen_size.x)

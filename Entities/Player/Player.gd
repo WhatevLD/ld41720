@@ -13,6 +13,22 @@ var velocity: Vector2
 var lastDirection: Vector2
 onready var animations = $Sprite
 
+enum State {
+	MOVING
+	EATING
+}
+
+var fatLevels = [ 
+	0, 		# 1
+	35000, 	# 2
+	70000, 	# 3
+	105000, # 4
+	140000, # 5
+	175000  # Dead
+]
+
+var state = State.MOVING
+
 func _input(event):
 	if event.is_action_pressed("ToggleFat"):
 		fatLevel = fatLevel + 1
@@ -20,19 +36,22 @@ func _input(event):
 			fatLevel = 1
 
 func _physics_process(delta):
-	var direction: Vector2
-	direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-	if direction != Vector2.ZERO:
-		if abs(direction.x) == 1 and abs(direction.y) == 1:	
-			direction = direction.normalized()	
-		velocity = velocity.move_toward(direction * speed, acceleration * delta)
-		move_animation(direction)
-	else:
-		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-		idle_animation()
-
-	move_and_collide(velocity * delta)
+	match state:
+		State.MOVING:	
+			var direction: Vector2
+			direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+			direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+			if direction != Vector2.ZERO:
+				if abs(direction.x) == 1 and abs(direction.y) == 1:	
+					direction = direction.normalized()	
+				velocity = velocity.move_toward(direction * speed, acceleration * delta)
+				move_animation(direction)
+			else:
+				velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+				idle_animation()
+			move_and_collide(velocity * delta)
+		State.EATING:
+			velocity = Vector2.ZERO
 
 
 func move_animation(direction):
@@ -66,4 +85,17 @@ func get_animation_direction(direction: Vector2):
 
 func _on_Area2D_area_entered(area):
 	calories += area.calories
+	state = State.EATING
+	animations.play(str(fatLevel) + "-eat")
 	area.queue_free()
+
+
+func _on_Sprite_animation_finished():
+	if state == State.EATING:
+		if calories > fatLevels[fatLevel]:
+			fatLevel += 1
+		if fatLevel == 6:
+			queue_free()
+		animations.animation = get_animation_direction(Vector2.DOWN)
+		idle_animation()
+		state = State.MOVING
