@@ -1,21 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Entities/Player/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Entities/Food/Food.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Art/Man/Out House.png" type="Texture" id=3]
+[ext_resource path="res://Timer.gd" type="Script" id=3]
 
 [node name="Root" type="Node2D"]
-
-[node name="Food" parent="." instance=ExtResource( 2 )]
-position = Vector2( 16.9452, 15.8155 )
-calories = 100
-tileId = 16
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 40.6684, 19.2045 )
 speed = 100
 maxAnimationFps = 4
 
-[node name="Out House" type="Sprite" parent="."]
-position = Vector2( 130.834, 26.905 )
-texture = ExtResource( 3 )
+[node name="Timer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 2.0
+autostart = true
+script = ExtResource( 3 )
+[connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
