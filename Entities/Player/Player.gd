@@ -11,6 +11,12 @@ var velocity: Vector2
 var lastDirection: Vector2
 onready var animations = $Sprite
 
+func _input(event):
+	if event.is_action_pressed("ToggleFat"):
+		fatLevel = fatLevel + 1
+		if fatLevel > 5:
+			fatLevel = 1
+
 func _physics_process(delta):
 	var direction: Vector2
 	direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
