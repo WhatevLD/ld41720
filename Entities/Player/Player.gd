@@ -16,6 +16,7 @@ onready var animations = $Sprite
 enum State {
 	MOVING
 	EATING
+	POOPING
 }
 
 var fatLevels = [ 
@@ -28,6 +29,8 @@ var fatLevels = [
 ]
 
 var state = State.MOVING
+
+	
 
 func _input(event):
 	if event.is_action_pressed("ToggleFat"):
@@ -51,6 +54,8 @@ func _physics_process(delta):
 				idle_animation()
 			move_and_collide(velocity * delta)
 		State.EATING:
+			velocity = Vector2.ZERO
+		State.POOPING:
 			velocity = Vector2.ZERO
 
 
@@ -84,11 +89,19 @@ func get_animation_direction(direction: Vector2):
 
 
 func _on_Area2D_area_entered(area):
-	calories += area.calories
-	state = State.EATING
-	animations.play(str(fatLevel) + "-eat")
-	area.queue_free()
-
+	print(area.get_groups())
+	match area.get_groups():
+		["food"]:
+			calories += area.calories
+			state = State.EATING
+			animations.play(str(fatLevel) + "-eat")
+			area.queue_free()
+		["outhouse"]:
+			self.hide()
+			self.position = area.position
+			self.position.y += 4
+			state = State.POOPING
+			area.poop()
 
 func _on_Sprite_animation_finished():
 	if state == State.EATING:
@@ -99,3 +112,12 @@ func _on_Sprite_animation_finished():
 		animations.animation = get_animation_direction(Vector2.DOWN)
 		idle_animation()
 		state = State.MOVING
+
+
+func _on_Outhouse_done_pooping():
+	self.show()
+	self.calories = 0
+	self.fatLevel = 1
+	animations.animation = get_animation_direction(Vector2.DOWN)
+	idle_animation()
+	state = State.MOVING
