@@ -17,14 +17,15 @@ func _physics_process(delta):
 		if abs(direction.x) == 1 and abs(direction.y) == 1:	
 			direction = direction.normalized()	
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
+		var animation = get_animation_direction(direction)
+		animationSpeed = 2 + 13 * direction.length()
+		animations.frames.set_animation_speed(animation, animationSpeed)
+		animations.play(animation)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 	move_and_collide(velocity * delta)
 	
-	var animation = get_animation_direction(direction)
-	animationSpeed = 2 + 13 * direction.length()
-	animations.frames.set_animation_speed(animation, animationSpeed)
-	animations.play(animation)
+	
 
 
 func get_animation_direction(direction: Vector2):
@@ -34,7 +35,9 @@ func get_animation_direction(direction: Vector2):
 		animation = str(fatLevel) + "-up"
 	elif norm_direction.x <= -0.707:
 		animation = str(fatLevel) +  "-left"
+		animations.flip_h = false
 	elif norm_direction.x >= 0.707:
-		animation = str(fatLevel) + "-right"
+		animation = str(fatLevel) + "-left"
+		animations.flip_h = true
 	return animation
 	
