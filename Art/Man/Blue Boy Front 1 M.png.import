@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Blue Boy front1M.png-ddfaa9173ff71c65949e70e8bae5ea29.stex"
+path="res://.import/Blue Boy Front 1 M.png-66a9c9508860a3b7b10ae7390c355af3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Man/Blue Boy front1M.png"
-dest_files=[ "res://.import/Blue Boy front1M.png-ddfaa9173ff71c65949e70e8bae5ea29.stex" ]
+source_file="res://Art/Man/Blue Boy Front 1 M.png"
+dest_files=[ "res://.import/Blue Boy Front 1 M.png-66a9c9508860a3b7b10ae7390c355af3.stex" ]
 
 [params]
 

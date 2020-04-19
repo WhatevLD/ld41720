@@ -52,7 +52,7 @@ func _physics_process(delta):
 			else:
 				velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 				idle_animation()
-			move_and_collide(velocity * delta)
+			velocity = move_and_slide(velocity)
 		State.EATING:
 			velocity = Vector2.ZERO
 		State.POOPING:
@@ -89,7 +89,6 @@ func get_animation_direction(direction: Vector2):
 
 
 func _on_Area2D_area_entered(area):
-	print(area.get_groups())
 	match area.get_groups():
 		["food"]:
 			calories += area.calories
