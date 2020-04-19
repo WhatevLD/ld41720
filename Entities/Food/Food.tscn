@@ -11,12 +11,13 @@ const HEIGHT = 16
 export(int) var calories = 0
 export(int, 0, 63) var tileId setget set_tile_id
 
-func set_tile_id(tileId):
-	
-	var column = tileId % 8
-	var row = tileId / 8
+func set_tile_id(newId):
+	var column = newId % 8
+	var row = newId / 8
+	tileId = newId
 	
 	$Sprite.region_rect = Rect2(column * WIDTH, row * HEIGHT, WIDTH, HEIGHT)
+
 "
 
 [sub_resource type="RectangleShape2D" id=2]

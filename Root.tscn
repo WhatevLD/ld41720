@@ -7,10 +7,10 @@
 
 [node name="Food" parent="." instance=ExtResource( 2 )]
 position = Vector2( 16.9452, 15.8155 )
+calories = 100
 tileId = 16
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 40.6684, 19.2045 )
 speed = 100
 maxAnimationFps = 4
-[connection signal="area_entered" from="Food" to="Player" method="_on_Food_area_entered"]

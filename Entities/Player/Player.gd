@@ -7,6 +7,8 @@ export var friction = 5000
 export var minAnimationFps = 2
 export var maxAnimationFps = 8
 
+export var calories = 0
+
 var velocity: Vector2
 var lastDirection: Vector2
 onready var animations = $Sprite
@@ -59,9 +61,9 @@ func get_animation_direction(direction: Vector2):
 		animation = str(fatLevel) + "-left"
 		animations.flip_h = true
 	return animation
-	
+		
 
 
-func _on_Food_area_entered(area):
-	print("I ate food")
-	
+func _on_Area2D_area_entered(area):
+	calories += area.calories
+	area.queue_free()
