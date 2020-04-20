@@ -47,12 +47,13 @@ func _on_Area2D_area_entered(area):
 		["food"]:
 			base.calories += area.calories
 			state = State.EATING
-			animations.play(str(fatLevel) + "-eat")
+			animations.play(str(base.fatLevel) + "-eat")
 			
 			# Reposition the food, make it so no one else can eat it
 			# Need to free this AFTER eating animation, and disable it's collison
 			area.position = position - Vector2(0,5)
 			area.z_index = z_index + 1
+			area.set_deferred("monitorable", false)
 			area.get_node("Crumbs").set_visible(true)
 			area.get_node("Crumbs").z_index = z_index + 1
 			currentFood = area

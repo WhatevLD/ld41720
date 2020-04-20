@@ -20,6 +20,7 @@ onready var base = ManScript.new()
 onready var animations = $Sprite
 var trackedFood
 var state = State.SEARCH
+var currentFood: Area2D
 
 enum State {
 	SEARCH
@@ -47,14 +48,15 @@ func _physics_process(delta):
 				var nearest = food_positions[0]
 				var nearest_distance = nearest.position.distance_to(self.position)
 				for food in food_positions:
-					var distance = food.position.distance_to(self.position)
-					if distance < nearest_distance:
-						nearest = food
-						nearest_distance = distance
+					if food.monitorable:
+						var distance = food.position.distance_to(self.position)
+						if distance < nearest_distance:
+							nearest = food
+							nearest_distance = distance
 				trackedFood = weakref(nearest)
 				state = State.MOVING
 		State.MOVING:
-			if trackedFood and trackedFood.get_ref():
+			if trackedFood and trackedFood.get_ref() and trackedFood.get_ref().monitorable:
 				var direction = trackedFood.get_ref().position - self.position
 				direction = direction.normalized()
 				if direction != Vector2.ZERO:
@@ -77,7 +79,14 @@ func _on_Area2D_area_entered(area):
 			base.calories += area.calories
 			state = State.EATING
 			animations.play(str(base.fatLevel) + "-eat")
-			area.queue_free()
+			
+			area.position = position - Vector2(0,5)
+			area.z_index = z_index + 1
+			area.set_deferred("monitorable", false)
+			area.get_node("Crumbs").set_visible(true)
+			area.get_node("Crumbs").z_index = z_index + 1
+			currentFood = area
+			#area.queue_free()
 
 func _on_Sprite_animation_finished():
 	if state == State.EATING:
@@ -88,4 +97,6 @@ func _on_Sprite_animation_finished():
 		animations.animation = base.get_animation_direction(Vector2.DOWN)
 		base.idle_animation()
 		state = State.SEARCH
+		if currentFood:
+			currentFood.queue_free()
 

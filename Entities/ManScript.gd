@@ -27,7 +27,7 @@ func move_animation(direction):
 	var animation = get_animation_direction(direction)
 	if oldDirection != lastDirection:
 		animations.frame = 0
-	print(minAnimationFps + maxAnimationFps * direction.length())
+	#print(minAnimationFps + maxAnimationFps * direction.length())
 	
 	animations.frames.set_animation_speed(animation, minAnimationFps + maxAnimationFps * direction.length())
 	animations.play(animation)
