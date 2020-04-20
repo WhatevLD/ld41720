@@ -45,16 +45,17 @@ func _physics_process(delta):
 			base.idle_animation()
 			var food_positions = get_tree().get_nodes_in_group("food")
 			if food_positions.size() > 0:
-				var nearest = food_positions[0]
-				var nearest_distance = nearest.position.distance_to(self.position)
+				var nearest
+				var nearest_distance
 				for food in food_positions:
 					if food.monitorable:
 						var distance = food.position.distance_to(self.position)
-						if distance < nearest_distance:
+						if !nearest or distance < nearest_distance:
 							nearest = food
 							nearest_distance = distance
-				trackedFood = weakref(nearest)
-				state = State.MOVING
+				if nearest:
+					trackedFood = weakref(nearest)
+					state = State.MOVING
 		State.MOVING:
 			if trackedFood and trackedFood.get_ref() and trackedFood.get_ref().monitorable:
 				var direction = trackedFood.get_ref().position - self.position
