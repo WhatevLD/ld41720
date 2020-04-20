@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Entities/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/Outhouse/Outhouse.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Timer.gd" type="Script" id=3]
+[ext_resource path="res://Entities/Player/Player.gd" type="Script" id=4]
+[ext_resource path="res://Entities/NPC/NPC.gd" type="Script" id=5]
 
 [node name="Root" type="Node2D"]
 
@@ -16,10 +18,13 @@ script = ExtResource( 3 )
 
 [node name="Player" parent="YSort" instance=ExtResource( 1 )]
 position = Vector2( 78.8515, 30.5013 )
-speed = 100
-maxAnimationFps = 4
+script = ExtResource( 4 )
 
 [node name="Outhouse" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 27.7901, 25.5307 )
+
+[node name="NPC" parent="YSort" instance=ExtResource( 1 )]
+position = Vector2( 153.862, 53.0949 )
+script = ExtResource( 5 )
 [connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
 [connection signal="done_pooping" from="YSort/Outhouse" to="YSort/Player" method="_on_Outhouse_done_pooping"]
