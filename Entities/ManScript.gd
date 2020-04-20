@@ -12,6 +12,7 @@ export var calories = 0
 var velocity: Vector2
 var lastDirection: Vector2
 var animations: AnimatedSprite
+var currentFood
 
 var fatLevels = [ 
 	0, 		# 1
@@ -63,3 +64,29 @@ func get_animation_direction(direction: Vector2):
 		lastDirection = Vector2.LEFT
 	return animation
 		
+		
+func done_eating():
+	currentFood.queue_free()
+	currentFood = null
+	if calories > fatLevels[fatLevel]:
+		fatLevel += 1
+	if fatLevel == 6:
+		queue_free()
+	else:
+		animations.animation = get_animation_direction(Vector2.DOWN)
+	idle_animation()
+	
+func eat_food(food, position, z_index):
+	if !currentFood:
+		calories += food.calories
+		animations.play(str(fatLevel) + "-eat")
+		
+		# Reposition the food, make it so no one else can eat it
+		# Need to free this AFTER eating animation, and disable it's collison
+		food.position = position - Vector2(0,5)
+		food.z_index = z_index + 1
+		food.set_deferred("monitorable", false)
+		food.get_node("Crumbs").set_visible(true)
+		food.get_node("Crumbs").z_index = z_index + 1
+		food.get_node("Chew").playing = true
+		currentFood = food

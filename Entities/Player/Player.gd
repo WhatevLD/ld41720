@@ -45,21 +45,8 @@ func _physics_process(delta):
 func _on_Area2D_area_entered(area):
 	match area.get_groups():
 		["food"]:
-			if !currentFood:
-				base.calories += area.calories
-				state = State.EATING
-				animations.play(str(base.fatLevel) + "-eat")
-				
-				# Reposition the food, make it so no one else can eat it
-				# Need to free this AFTER eating animation, and disable it's collison
-				area.position = position - Vector2(0,5)
-				area.z_index = z_index + 1
-				area.set_deferred("monitorable", false)
-				area.get_node("Crumbs").set_visible(true)
-				area.get_node("Crumbs").z_index = z_index + 1
-				area.get_node("Chew").playing = true
-				currentFood = area
-			#area.queue_free()
+			base.eat_food(area, position, z_index)
+			state = State.EATING
 		["outhouse"]:
 			self.hide()
 			self.position = area.position
@@ -69,15 +56,7 @@ func _on_Area2D_area_entered(area):
 
 func _on_Sprite_animation_finished():
 	if state == State.EATING:
-		currentFood.queue_free()
-		currentFood = null
-		if base.calories > base.fatLevels[base.fatLevel]:
-			base.fatLevel += 1
-		if base.fatLevel == 6:
-			queue_free()
-		else:
-			animations.animation = base.get_animation_direction(Vector2.DOWN)
-		base.idle_animation()
+		base.done_eating()
 		state = State.MOVING
 	
 
