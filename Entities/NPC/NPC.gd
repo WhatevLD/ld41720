@@ -86,6 +86,7 @@ func _on_Area2D_area_entered(area):
 			area.set_deferred("monitorable", false)
 			area.get_node("Crumbs").set_visible(true)
 			area.get_node("Crumbs").z_index = z_index + 1
+			area.get_node("Chew").playing = true
 			currentFood = area
 			#area.queue_free()
 
@@ -95,7 +96,8 @@ func _on_Sprite_animation_finished():
 			base.fatLevel += 1
 		if base.fatLevel == 6:
 			queue_free()
-		animations.animation = base.get_animation_direction(Vector2.DOWN)
+		else:
+			animations.animation = base.get_animation_direction(Vector2.DOWN)
 		base.idle_animation()
 		state = State.SEARCH
 		if currentFood:
