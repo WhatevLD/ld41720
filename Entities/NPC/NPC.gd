@@ -93,12 +93,12 @@ func _on_Area2D_area_entered(area):
 
 func _on_Sprite_animation_finished():
 	if state == State.EATING:
-		currentFood.free()
+		currentFood.queue_free()
 		currentFood = null
 		if base.calories > base.fatLevels[base.fatLevel]:
 			base.fatLevel += 1
 		if base.fatLevel == 6:
-			free()
+			queue_free()
 		else:
 			animations.animation = base.get_animation_direction(Vector2.DOWN)
 		base.idle_animation()
