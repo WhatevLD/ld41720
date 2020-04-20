@@ -19,6 +19,7 @@ func _ready():
 	var sprite = self.get_node("Sprite")
 	var _err = self.get_node("Area2D").connect("area_entered", self, "_on_Area2D_area_entered")
 	_err = sprite.connect("animation_finished", self, "_on_Sprite_animation_finished")
+	get_parent().get_parent().get_node("PlayerCalories").max_value = base.fatLevel()
 
 func _physics_process(delta):
 	match state:
@@ -45,7 +46,7 @@ func _physics_process(delta):
 func _on_Area2D_area_entered(area):
 	match area.get_groups():
 		["food"]:
-			base.eat_food(area, position, z_index)
+			base.eat_food(area, position, z_index, get_parent().get_parent().get_node("PlayerCalories"))
 			state = State.EATING
 		["outhouse"]:
 			self.hide()
@@ -56,14 +57,17 @@ func _on_Area2D_area_entered(area):
 
 func _on_Sprite_animation_finished():
 	if state == State.EATING:
-		base.done_eating()
+		base.done_eating(get_parent().get_parent().get_node("PlayerCalories"))
 		state = State.MOVING
 	
 
 func _on_Outhouse_done_pooping():
 	self.show()
+	var progress = get_parent().get_parent().get_node("PlayerCalories")
 	base.calories = 0
 	base.fatLevel = 1
+	progress.value = 0
+	progress.max_value = base.fatLevel()
 	animations.animation = base.get_animation_direction(Vector2.DOWN)
 	base.idle_animation()
 	state = State.MOVING

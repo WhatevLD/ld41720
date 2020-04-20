@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Entities/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/Outhouse/Outhouse.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Timer.gd" type="Script" id=3]
 [ext_resource path="res://Entities/Player/Player.gd" type="Script" id=4]
 [ext_resource path="res://Entities/NPC/NPC.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.858824, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0.466667, 0.992157, 1 )
 
 [node name="Root" type="Node2D"]
 
@@ -21,10 +27,32 @@ position = Vector2( 78.8515, 30.5013 )
 script = ExtResource( 4 )
 
 [node name="Outhouse" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 27.7901, 25.5307 )
+position = Vector2( 20.1083, 32.3088 )
 
 [node name="NPC" parent="YSort" instance=ExtResource( 1 )]
 position = Vector2( 153.862, 53.0949 )
 script = ExtResource( 5 )
+
+[node name="NPCCalories" type="ProgressBar" parent="."]
+margin_left = 245.274
+margin_top = 2.22194
+margin_right = 315.274
+margin_bottom = 5.22194
+custom_styles/fg = SubResource( 1 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerCalories" type="ProgressBar" parent="."]
+margin_left = 2.39323
+margin_top = 1.996
+margin_right = 72.3932
+margin_bottom = 4.996
+custom_styles/fg = SubResource( 2 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
 [connection signal="done_pooping" from="YSort/Outhouse" to="YSort/Player" method="_on_Outhouse_done_pooping"]
