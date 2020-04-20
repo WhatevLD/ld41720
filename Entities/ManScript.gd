@@ -30,6 +30,8 @@ func animationFps():
 	var modifier = float((6 - fatLevel)) / 5.0
 	return maxAnimationFps * modifier
 	
+func poopTime():
+	return fatLevel * 2
 
 func move_animation(direction):
 	var oldDirection = lastDirection

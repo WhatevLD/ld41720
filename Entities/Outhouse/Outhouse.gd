@@ -18,6 +18,7 @@ func on_poop_complete():
 	animations.play("open")
 	emit_signal("done_pooping")
 
-func poop():	
+func poop(time):	
 	animations.play("closed")
+	poopTimer.wait_time = time
 	poopTimer.start()

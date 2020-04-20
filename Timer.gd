@@ -14,8 +14,8 @@ func _on_Timer_timeout():
 	food.calories = rand.randi_range(1000, 10000)
 	food.tileId = rand.randi_range(0, 63)
 
-	var x = rand.randf_range(0,screen_size.x)
-	var y = rand.randf_range(0,screen_size.y)
+	var x = rand.randf_range(16,screen_size.x - 16)
+	var y = rand.randf_range(16,screen_size.y - 16)
 	
 	food.position.x = x
 	food.position.y = y
