@@ -61,7 +61,7 @@ func _physics_process(delta):
 				var direction = trackedFood.get_ref().position - self.position
 				direction = direction.normalized()
 				if direction != Vector2.ZERO:
-					base.velocity = base.velocity.move_toward(direction * base.speed, base.acceleration * delta)
+					base.velocity = base.velocity.move_toward(direction * base.speed(), base.acceleration * delta)
 					base.move_animation(direction)
 				else:
 					base.velocity = base.velocity.move_toward(Vector2.ZERO, base.friction * delta)

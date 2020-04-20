@@ -1,7 +1,7 @@
 extends Node
 
 export(int, 1, 5) var fatLevel = 1
-export var speed = 100
+export var baseSpeed = 100
 export var acceleration = 2500
 export var friction = 5000
 export var minAnimationFps = 2
@@ -22,14 +22,22 @@ var fatLevels = [
 	175000  # Dead
 ]
 
+func speed():
+	var modifier = float((6 - fatLevel)) / 5.0
+	return baseSpeed * modifier
+
+func animationFps():
+	var modifier = float((6 - fatLevel)) / 5.0
+	return maxAnimationFps * modifier
+	
+
 func move_animation(direction):
 	var oldDirection = lastDirection
 	var animation = get_animation_direction(direction)
 	if oldDirection != lastDirection:
 		animations.frame = 0
-	#print(minAnimationFps + maxAnimationFps * direction.length())
-	
-	animations.frames.set_animation_speed(animation, minAnimationFps + maxAnimationFps * direction.length())
+			
+	animations.frames.set_animation_speed(animation, minAnimationFps + animationFps() * direction.length())
 	animations.play(animation)
 
 
