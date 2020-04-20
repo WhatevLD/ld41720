@@ -35,6 +35,7 @@ func _ready():
 	materialShader.shader = colorShader
 	animations.material = materialShader
 	get_parent().get_parent().get_node("NPCCalories").max_value = base.fatLevel()
+	
 	var _err = self.get_node("Area2D").connect("area_entered", self, "_on_Area2D_area_entered")
 	_err = animations.connect("animation_finished", self, "_on_Sprite_animation_finished")
 
@@ -76,11 +77,11 @@ func _physics_process(delta):
 func _on_Area2D_area_entered(area):
 	match area.get_groups():
 		["food"]:
-			base.eat_food(area, position, z_index, get_parent().get_parent().get_node("NPCCalories"))
+			base.eat_food(area, position, z_index, get_parent().get_parent().get_node("NPCCalories"), get_parent().get_parent().get_node("NPCFatLevel"))
 			state = State.EATING		
 
 func _on_Sprite_animation_finished():
 	if state == State.EATING:
-		base.done_eating(get_parent().get_parent().get_node("NPCCalories"))
+		base.done_eating(get_parent().get_parent().get_node("NPCCalories"), get_parent().get_parent().get_node("NPCFatLevel"))
 		state = State.SEARCH
 

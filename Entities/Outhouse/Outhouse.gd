@@ -16,7 +16,7 @@ func _ready():
 	add_child(poopTimer)
 	poopSoundTimer = Timer.new()
 	poopSoundTimer.one_shot = true
-	poopSoundTimer.wait_time = 2
+	poopSoundTimer.wait_time = 1.5
 	poopSoundTimer.connect("timeout", self, "on_soundTimer_complete")
 	add_child(poopSoundTimer)
 
@@ -28,7 +28,7 @@ func on_poop_complete():
 	$Door.play()
 	emit_signal("done_pooping")
 
-func poop(time):	
+func poop(time):
 	animations.play("closed")
 	poopTimer.wait_time = time
 	$Door.play()

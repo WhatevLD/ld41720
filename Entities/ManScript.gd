@@ -68,12 +68,13 @@ func get_animation_direction(direction: Vector2):
 func fatLevel():
 	return fatLevels[fatLevel] - fatLevels[fatLevel - 1]
 		
-func done_eating(bar):
+func done_eating(bar, level):
 	currentFood.queue_free()
 	currentFood = null
 	if calories > fatLevels[fatLevel]:
 		fatLevel += 1
 		bar.value = calories - fatLevels[fatLevel - 1]
+		level.value = fatLevel - 1
 		if fatLevel != 6:
 			bar.max_value = fatLevel()
 	if fatLevel == 6:
@@ -82,10 +83,11 @@ func done_eating(bar):
 		animations.animation = get_animation_direction(Vector2.DOWN)
 	idle_animation()
 	
-func eat_food(food, position, z_index, bar):
+func eat_food(food, position, z_index, bar, level):
 	if !currentFood:		
 		calories += food.calories
 		bar.value = calories - fatLevels[fatLevel - 1]
+		level.value = fatLevel - 1
 		animations.play(str(fatLevel) + "-eat")
 		
 		# Reposition the food, make it so no one else can eat it
