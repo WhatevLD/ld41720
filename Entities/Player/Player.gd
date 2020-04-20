@@ -1,11 +1,11 @@
 extends KinematicBody2D
 
 export(int, 1, 5) var fatLevel = 1
-export var speed = 500
+export var speed = 100
 export var acceleration = 2500
 export var friction = 5000
 export var minAnimationFps = 2
-export var maxAnimationFps = 8
+export var maxAnimationFps = 4
 
 export var calories = 0
 
@@ -30,7 +30,9 @@ var fatLevels = [
 
 var state = State.MOVING
 
-	
+func _ready():
+	self.get_node("Area2D").connect("area_entered", self, "_on_Area2D_area_entered")
+	self.get_node("Sprite").connect("animation_finished", self, "_on_Sprite_animation_finished")
 
 func _input(event):
 	if event.is_action_pressed("ToggleFat"):
