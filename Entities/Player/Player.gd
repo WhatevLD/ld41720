@@ -31,8 +31,8 @@ var fatLevels = [
 var state = State.MOVING
 
 func _ready():
-	self.get_node("Area2D").connect("area_entered", self, "_on_Area2D_area_entered")
-	self.get_node("Sprite").connect("animation_finished", self, "_on_Sprite_animation_finished")
+	var _err = self.get_node("Area2D").connect("area_entered", self, "_on_Area2D_area_entered")
+	_err = self.get_node("Sprite").connect("animation_finished", self, "_on_Sprite_animation_finished")
 
 func _input(event):
 	if event.is_action_pressed("ToggleFat"):
