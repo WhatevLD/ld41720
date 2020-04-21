@@ -25,6 +25,7 @@ enum State {
 	SEARCH
 	MOVING
 	EATING
+	DYING
 }
 
 func _ready():
@@ -72,6 +73,8 @@ func _physics_process(delta):
 				state = State.SEARCH
 		State.EATING:
 			base.velocity = Vector2.ZERO
+		State.DYING:
+			base.velocity = Vector2.ZERO
 				
 
 func _on_Area2D_area_entered(area):
@@ -81,7 +84,20 @@ func _on_Area2D_area_entered(area):
 			state = State.EATING		
 
 func _on_Sprite_animation_finished():
-	if state == State.EATING:
-		base.done_eating(get_parent().get_parent().get_node("NPCCalories"), get_parent().get_parent().get_node("NPCFatLevel"))
-		state = State.SEARCH
+	match state:
+		State.EATING:
+			base.done_eating(get_parent().get_parent().get_node("NPCCalories"), get_parent().get_parent().get_node("NPCFatLevel"))
+			if base.fatLevel == 6:
+				base.die_animation()
+				state = State.DYING
+			else:
+				state = State.SEARCH
+		State.DYING:
+			queue_free()
+			var score = get_parent().get_parent().get_node("ScoreLabel")
+			var player = get_parent().get_node("Player")
+			score.text = "SCORE: %s" % [player.base.score]
+			score.visible = true
+			get_tree().paused = true
+
 

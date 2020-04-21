@@ -222,5 +222,19 @@ shape = SubResource( 10 )
 [node name="Bottom" type="CollisionShape2D" parent="PlayField"]
 position = Vector2( 160, 104 )
 shape = SubResource( 11 )
+
+[node name="ScoreLabel" type="RichTextLabel" parent="."]
+visible = false
+margin_left = 89.644
+margin_top = 9.841
+margin_right = 225.644
+margin_bottom = 22.841
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "SCORE: 10000000"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
 [connection signal="done_pooping" from="YSort/Outhouse" to="YSort/Player" method="_on_Outhouse_done_pooping"]

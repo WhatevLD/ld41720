@@ -10,6 +10,7 @@ enum State {
 	MOVING
 	EATING
 	POOPING
+	DYING
 }
 
 var state = State.MOVING
@@ -40,6 +41,8 @@ func _physics_process(delta):
 			base.velocity = Vector2.ZERO
 		State.POOPING:
 			base.velocity = Vector2.ZERO
+		State.DYING:
+			base.velocity = Vector2.ZERO
 
 
 
@@ -56,11 +59,21 @@ func _on_Area2D_area_entered(area):
 			area.poop(base.poopTime())
 
 func _on_Sprite_animation_finished():
-	if state == State.EATING:
-		base.done_eating(get_parent().get_parent().get_node("PlayerCalories"), get_parent().get_parent().get_node("PlayerFatLevel"))
-		state = State.MOVING
+	match state:
+		State.EATING:
+			base.done_eating(get_parent().get_parent().get_node("PlayerCalories"), get_parent().get_parent().get_node("PlayerFatLevel"))
+			if base.fatLevel == 6:
+				base.die_animation()
+				state = State.DYING
+			else:
+				state = State.MOVING
+		State.DYING:
+			queue_free()
+			var score = get_parent().get_parent().get_node("ScoreLabel")
+			score.text = "SCORE: %s" % [base.score]
+			score.visible = true
+			get_tree().paused = true
 	
-
 func _on_Outhouse_done_pooping():
 	self.show()
 	var progress = get_parent().get_parent().get_node("PlayerCalories")

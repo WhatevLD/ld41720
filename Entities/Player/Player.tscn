@@ -21,6 +21,7 @@ shape = SubResource( 1 )
 [node name="Sprite" parent="." instance=ExtResource( 1 )]
 material = SubResource( 2 )
 position = Vector2( 0, 1 )
+animation = "1-down"
 
 [node name="Area2D" type="Area2D" parent="."]
 

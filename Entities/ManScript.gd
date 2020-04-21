@@ -13,6 +13,7 @@ var velocity: Vector2
 var lastDirection: Vector2
 var animations: AnimatedSprite
 var currentFood
+var score = 0
 
 var fatLevels = [ 
 	0, 		# 1
@@ -68,6 +69,9 @@ func get_animation_direction(direction: Vector2):
 func fatLevel():
 	return fatLevels[fatLevel] - fatLevels[fatLevel - 1]
 		
+func die_animation():
+	animations.play("explode")
+	
 func done_eating(bar, level):
 	currentFood.queue_free()
 	currentFood = null
@@ -77,15 +81,13 @@ func done_eating(bar, level):
 		level.value = fatLevel - 1
 		if fatLevel != 6:
 			bar.max_value = fatLevel()
-	if fatLevel == 6:
-		queue_free()
-	else:
 		animations.animation = get_animation_direction(Vector2.DOWN)
 	idle_animation()
 	
 func eat_food(food, position, z_index, bar, level):
 	if !currentFood:		
 		calories += food.calories
+		score += food.calories
 		bar.value = calories - fatLevels[fatLevel - 1]
 		level.value = fatLevel - 1
 		animations.play(str(fatLevel) + "-eat")
